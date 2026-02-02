@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/favicon-32x32.png">
+    <title>Zarqen | Discover 500+ Critical Vulnerabilities Before Hackers Do</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-bg: #000000;
+            --darker-bg: #0a0a0f;
+            --card-bg: #0d0d12;
+            --grid-line: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #8892b0;
+            --accent-blue: #00f0ff;
+            --accent-cyan: #0ff;
+            --accent-purple: #a855f7;
+            --accent-pink: #ff006e;
+            --accent-green: #00ff88;
+            --glow-blue: rgba(0, 240, 255, 0.4);
+            --glow-purple: rgba(168, 85, 247, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated Grid Background */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Gradient Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .orb-1 {
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-purple), transparent);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            bottom: -300px;
+            left: -300px;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, var(--accent-blue), transparent);
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .orb-3 {
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-pink), transparent);
+            animation: float 30s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        header {
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-attention {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.15), rgba(168, 85, 247, 0.15));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 30px;
+            font-size: 11px;
+            color: var(--accent-pink);
+            font-weight: 700;
+            margin-bottom: 32px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; }
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 68px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            letter-spacing: -2px;
+        }
+
+        .hero-content h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subheading {
+            font-size: 22px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-guarantee {
+            font-size: 16px;
+            color: var(--accent-green);
+            font-weight: 600;
+            margin-bottom: 48px;
+            padding: 16px 24px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .cta-primary {
+            padding: 20px 48px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: var(--text-primary);
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 240, 255, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(0, 240, 255, 0.5);
+        }
+
+        .cta-note {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 16px;
+            font-style: italic;
+        }
+
+        /* Trusted By Section */
+        .trusted-by {
+            padding: 60px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .trusted-label {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .logo-strip {
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .logo-track {
+            display: flex;
+            gap: 80px;
+            animation: scroll 40s linear infinite;
+            width: fit-content;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .client-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+            letter-spacing: 1px;
+        }
+
+        /* Pain Points Section */
+        .pain-points {
+            padding: 100px 0;
+            background: linear-gradient(180deg, transparent, rgba(168, 85, 247, 0.03), transparent);
+        }
+
+        .section-header {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            text-align: center;
+        }
+
+        .section-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-header {
+            padding: 24px 32px;
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-header.without {
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            color: var(--accent-pink);
+        }
+
+        .comparison-header.with {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--accent-green);
+        }
+
+        .comparison-row {
+            padding: 24px 32px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .comparison-row.without {
+            color: rgba(255, 0, 110, 0.9);
+        }
+
+        .comparison-row.with {
+            color: rgba(0, 255, 136, 0.9);
+        }
+
+        .comparison-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Why Choose Us Section */
+        .why-choose {
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            padding: 40px 32px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 240, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .feature-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 100px 0;
+            background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.02), transparent);
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .process-step {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 48px 36px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .process-number {
+            position: absolute;
+            top: -20px;
+            left: 36px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 240, 255, 0.3);
+        }
+
+        .process-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            margin-top: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .process-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Key Features Section */
+        .key-features {
+            padding: 100px 0;
+        }
+
+        .key-feature-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .key-feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 48px 44px;
+            transition: all 0.3s ease;
+        }
+
+        .key-feature-card:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .key-feature-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .key-feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .key-feature-title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .key-feature-content {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background: linear-gradient(180deg, rgba(168, 85, 247, 0.02), transparent);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 40px 32px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            font-size: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .testimonial-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .testimonial-role {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .faq-list {
+            max-width: 900px;
+            margin: 60px auto 0;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 32px 36px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .faq-answer {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            padding: 120px 0;
+            text-align: center;
+            background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.03));
+        }
+
+        .final-cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta h2 {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .final-cta p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .container { padding: 0 40px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .key-feature-cards { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 42px; }
+            .comparison-table { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .process-steps { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Zarqen</div>
+                <ul class="nav-links">
+                    <li><a href="#why-choose">Why Choose Us</a></li>
+                    <li><a href="#process">Process</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="/blogs.html">Research</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-attention">
+                    🔒 ATTENTION CTOS & SECURITY LEADERS
+                </div>
+                <h1>
+                    Discover <span class="highlight">500+ Critical Vulnerabilities</span> Before Hackers Do — Guaranteed in 90 Days
+                </h1>
+                <p class="hero-subheading">
+                    Stop guessing about your security posture. Our elite penetration testing team systematically eliminates vulnerabilities across your entire technology stack — from cloud infrastructure to mobile applications — delivering actionable remediation within 48 hours of engagement.
+                </p>
+                <div class="hero-guarantee">
+                    ✓ Guaranteed Results or We Work for Free + $5,000 Back — Written in Contract
+                </div>
+                <a href="/connect-now.html" class="cta-primary">Book Your Free Security Assessment</a>
+                <p class="cta-note">⚡ We only work with 12 clients at once — Limited availability</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="trusted-by">
+        <div class="container">
+            <div class="trusted-label">Trusted by Industry Leaders Worldwide</div>
+            <div class="logo-strip">
+                <div class="logo-track">
+                    <div class="client-logo">Hitachi</div>
+                    <div class="client-logo">Ethos</div>
+                    <div class="client-logo">OLX</div>
+                    <div class="client-logo">VistaPath</div>
+                    <div class="client-logo">Comun</div>
+                    <div class="client-logo">Apalazo</div>
+                    <div class="client-logo">Credicorp</div>
+                    <div class="client-logo">Kueski</div>
+                    <div class="client-logo">Yape</div>
+                    <div class="client-logo">ThirtyMadison</div>
+                    <div class="client-logo">Hitachi</div>
+                    <div class="client-logo">Ethos</div>
+                    <div class="client-logo">OLX</div>
+                    <div class="client-logo">VistaPath</div>
+                    <div class="client-logo">Comun</div>
+                    <div class="client-logo">Apalazo</div>
+                    <div class="client-logo">Credicorp</div>
+                    <div class="client-logo">Kueski</div>
+                    <div class="client-logo">Yape</div>
+                    <div class="client-logo">ThirtyMadison</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section class="pain-points" id="pain-points">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">The Reality</div>
+                <h2 class="section-title">Are These Security Nightmares Keeping You Up at Night?</h2>
+                <p class="section-subtitle">Most organizations are sitting on ticking time bombs without even knowing it</p>
+            </div>
+            <div class="comparison-table">
+                <div class="comparison-header without">❌ Without Zarqen</div>
+                <div class="comparison-header with">✓ With Zarqen</div>
+                
+                <div class="comparison-row without">
+                    <span class="comparison-icon">⚠️</span>
+                    <span>Unknown vulnerabilities silently exposing customer data</span>
+                </div>
+                <div class="comparison-row with">
+                    <span class="comparison-icon">🛡️</span>
+                    <span>500+ critical vulnerabilities discovered and eliminated</span>
+                </div>
+
+                <div class="comparison-row without">
+                    <span class="comparison-icon">💸</span>
+                    <span>Risk of million-dollar breaches and regulatory fines</span>
+                </div>
+                <div class="comparison-row with">
+                    <span class="comparison-icon">💰</span>
+                    <span>Compliance-ready security with detailed audit reports</span>
+                </div>
+
+                <div class="comparison-row without">
+                    <span class="comparison-icon">🔥</span>
+                    <span>Emergency firefighting when breaches occur</span>
+                </div>
+                <div class="comparison-row with">
+                    <span class="comparison-icon">🎯</span>
+                    <span>Proactive threat elimination before attacks happen</span>
+                </div>
+
+                <div class="comparison-row without">
+                    <span class="comparison-icon">❓</span>
+                    <span>Guessing if your security measures actually work</span>
+                </div>
+                <div class="comparison-row with">
+                    <span class="comparison-icon">📊</span>
+                    <span>Data-driven security metrics with CVSS risk scoring</span>
+                </div>
+
+                <div class="comparison-row without">
+                    <span class="comparison-icon">😰</span>
+                    <span>Can't sleep worrying about potential security gaps</span>
+                </div>
+                <div class="comparison-row with">
+                    <span class="comparison-icon">😌</span>
+                    <span>Sleep peacefully with enterprise-grade protection</span>
+                </div>
+
+                <div class="comparison-row without">
+                    <span class="comparison-icon">⏱️</span>
+                    <span>Months waiting for security assessment results</span>
+                </div>
+                <div class="comparison-row with">
+                    <span class="comparison-icon">⚡</span>
+                    <span>Actionable insights delivered within 48 hours</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose" id="why-choose">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Our Difference</div>
+                <h2 class="section-title">Why CTOs Choose Zarqen Over Other Security Firms</h2>
+                <p class="section-subtitle">We're not just another security agency — we're elite attack simulation engineers who think like hackers</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Zero False Positives</h3>
+                    <p class="feature-description">Manual expert verification on every finding. We don't waste your time with automated scanner noise — only real, exploitable vulnerabilities that matter.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">48-Hour Response Time</h3>
+                    <p class="feature-description">From engagement to actionable insights in under 48 hours. We know security can't wait when your business depends on it.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3 class="feature-title">Elite Team Credentials</h3>
+                    <p class="feature-description">OSCP, OSWE, GXPN, eWPTX certified researchers. 7+ years combined experience with 10+ CVE discoveries and 200+ enterprise assessments completed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Hands-On Remediation</h3>
+                    <p class="feature-description">We don't just find problems and walk away. Our team provides code-level fixes, architectural recommendations, and stays until you're fully secured.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Full-Stack Coverage</h3>
+                    <p class="feature-description">From cloud infrastructure to mobile apps, APIs to AI/ML systems — we test every attack surface with the same rigor attackers would use.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">Guaranteed Results</h3>
+                    <p class="feature-description">If we don't meet our objectives within 90 days, we work for free until we do — plus return $5,000. That's our written commitment to your success.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">How It Works</div>
+                <h2 class="section-title">Get Enterprise-Grade Security in 3 Simple Steps</h2>
+                <p class="section-subtitle">From first contact to bulletproof security — we make the process effortless</p>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="process-number">1</div>
+                    <h3 class="process-title">Book Your Free Strategy Call</h3>
+                    <p class="process-description">Schedule a 30-minute consultation with our lead security architect. We'll analyze your current tech stack, identify high-risk areas, and map out a customized penetration testing plan tailored to your business objectives — with zero obligation.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-number">2</div>
+                    <h3 class="process-title">We Execute Deep-Dive Testing</h3>
+                    <p class="process-description">Our elite team launches systematic attack simulation across your entire infrastructure. We combine manual exploitation with automated scanning, testing 200+ attack vectors including OWASP Top 10, business logic flaws, and zero-day scenarios. You stay informed with daily progress updates.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-number">3</div>
+                    <h3 class="process-title">Receive Actionable Results & Remediation</h3>
+                    <p class="process-description">Within 48 hours, get a comprehensive security report with CVSS-scored vulnerabilities, proof-of-concept exploits, and step-by-step remediation guides. Our team stays available for code review and architecture consultation until every critical issue is resolved.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="key-features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">What You Get</div>
+                <h2 class="section-title">The Complete Zarqen Security Arsenal</h2>
+            </div>
+            <div class="key-feature-cards">
+                <div class="key-feature-card">
+                    <div class="key-feature-header">
+                        <div class="key-feature-icon">⚔️</div>
+                        <h3 class="key-feature-title">Attack Simulation Engineering</h3>
+                    </div>
+                    <div class="key-feature-content">
+                        <p>Our methodology mirrors real-world adversary tactics, techniques, and procedures (TTPs) used by sophisticated threat actors. We don't just run automated scanners — our OSCP and OSWE certified researchers manually probe every component of your infrastructure.</p>
+                        <p><br/>We test web applications for injection flaws, authentication bypasses, and business logic vulnerabilities. Mobile apps undergo reverse engineering and runtime manipulation analysis. Cloud infrastructure receives comprehensive configuration reviews covering IAM policies, network segmentation, and data exposure risks.</p>
+                        <p><br/>Each assessment includes container security hardening (Docker/Kubernetes), API security testing (REST/GraphQL), and emerging threat analysis for AI/ML systems. You receive not just a vulnerability list, but a complete attack narrative showing exactly how an attacker could chain exploits to achieve business-critical objectives.</p>
+                    </div>
+                </div>
+                <div class="key-feature-card">
+                    <div class="key-feature-header">
+                        <div class="key-feature-icon">🛠️</div>
+                        <h3 class="key-feature-title">DevSecOps Integration & Continuous Security</h3>
+                    </div>
+                    <div class="key-feature-content">
+                        <p>Security shouldn't be a one-time checkbox — it needs to be embedded throughout your development lifecycle. We architect automated security validation systems that catch vulnerabilities before they reach production environments.</p>
+                        <p><br/>Our DevSecOps integration includes custom security gates for your CI/CD pipelines, automated SAST/DAST scanning with intelligent noise reduction, container image vulnerability analysis, and infrastructure-as-code security reviews. We implement secret scanning, dependency vulnerability tracking, and compliance automation.</p>
+                        <p><br/>Beyond tooling, we provide security training for your development teams, establish secure coding standards, and create runbooks for incident response. You get continuous security monitoring with weekly vulnerability trend reports, ensuring your security posture improves over time rather than degrading between annual penetration tests.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Success Stories</div>
+                <h2 class="section-title">What Security Leaders Say About Working With Us</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Zarqen discovered 73 critical vulnerabilities we had no idea existed, including a SQL injection that could have exposed our entire customer database. Their team didn't just report it — they worked with our developers to implement proper parameterized queries and WAF rules. Saved us from a potential multi-million dollar breach."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MR</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Marcus Rodriguez</div>
+                            <div class="testimonial-role">CTO, Fintech Startup</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"We've worked with three other security firms before Zarqen, and they all gave us 200-page reports full of false positives and theoretical risks. Zarqen's approach was completely different — every finding was verified, exploitable, and came with actual proof-of-concept code. They're the real deal."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SK</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Sarah Kim</div>
+                            <div class="testimonial-role">VP Engineering, Healthcare SaaS</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The 48-hour turnaround time was game-changing for us. We needed SOC 2 compliance fast, and Zarqen delivered a comprehensive security assessment with detailed remediation guidance in under two days. Their team even helped us implement fixes and passed our audit on the first try. Absolutely worth every penny."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">DJ</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">David Johnson</div>
+                            <div class="testimonial-role">CISO, E-commerce Platform</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Questions?</div>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3 class="faq-question">How quickly can I expect to see results from your security assessment?</h3>
+                    <p class="faq-answer">Most clients receive their comprehensive security report with actionable remediation guidance within 48 hours of engagement kickoff. Our systematic testing methodology allows us to efficiently cover your entire attack surface while maintaining the depth and accuracy that manual expert analysis provides. You'll receive daily progress updates throughout the assessment period.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">What happens if you don't find any critical vulnerabilities?</h3>
+                    <p class="faq-answer">While extremely rare in our experience (we've discovered 500+ vulnerabilities across 200+ assessments), if we genuinely don't identify actionable security improvements within 90 days, we'll provide a comprehensive security validation report documenting our testing methodology and coverage. However, our guarantee focuses on delivering valuable security insights — and we've never failed to provide measurable value to our clients.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Do you only test web applications, or can you assess our entire infrastructure?</h3>
+                    <p class="faq-answer">We provide full-stack security coverage including web applications, mobile apps (iOS/Android), cloud infrastructure (AWS/Azure/GCP), APIs (REST/GraphQL), container environments (Docker/Kubernetes), CI/CD pipelines, and emerging technologies like AI/ML systems. Our team has expertise across the entire modern technology stack, ensuring no attack surface goes untested.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">What makes Zarqen different from automated security scanning tools?</h3>
+                    <p class="faq-answer">Automated scanners generate massive false positive rates and miss complex business logic vulnerabilities that require human intelligence to exploit. Our OSCP/OSWE certified researchers manually verify every finding and chain exploits the way real attackers do. We find vulnerabilities that automated tools miss — including authentication bypasses, privilege escalation paths, and business logic flaws that could lead to financial fraud or data breaches.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Will your testing disrupt our production environment or cause downtime?</h3>
+                    <p class="faq-answer">We coordinate all testing activities with your team and follow industry-standard safe testing protocols. Most assessments are conducted in staging environments first, and production testing is carefully scoped to avoid service disruption. We maintain constant communication channels and can immediately halt testing if any issues arise. Our goal is to improve your security posture, not create operational problems.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Do you help us fix the vulnerabilities you discover, or just report them?</h3>
+                    <p class="faq-answer">We provide comprehensive remediation support including code-level fixes, architectural recommendations, security configuration guidance, and developer training. Many clients engage us for remediation validation after fixes are implemented. We don't just point out problems and disappear — we partner with your team until your security objectives are fully achieved. That's what makes our guarantee possible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="final-cta-content">
+                <h2>Stop Waiting for a Breach to Take Security Seriously</h2>
+                <p>Every day without a comprehensive security assessment is another day hackers could be exploiting unknown vulnerabilities in your systems. Book your free strategy call now — we only work with 12 clients at once.</p>
+                <a href="/connect-now.html" class="cta-primary">Book Your Free Security Assessment</a>
+                <p class="cta-note">✓ No obligation • ✓ 30-minute call • ✓ Custom security roadmap • ✓ Limited availability</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">© 2025 Zarqen. All rights reserved. Elite Cybersecurity Consulting.</div>
+                <div class="footer-links">
+                    <a href="#privacy">Privacy</a>
+                    <a href="#terms">Terms</a>
+                    <a href="/blogs.html">Research</a>
+                    <a href="/connect-now.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
