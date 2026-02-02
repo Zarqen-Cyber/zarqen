@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/favicon-32x32.png">
+    <title>Zarqen | Elite Cybersecurity Consulting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-bg: #000000;
+            --darker-bg: #0a0a0f;
+            --card-bg: #0d0d12;
+            --grid-line: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #8892b0;
+            --accent-blue: #00f0ff;
+            --accent-cyan: #0ff;
+            --accent-purple: #a855f7;
+            --accent-pink: #ff006e;
+            --glow-blue: rgba(0, 240, 255, 0.4);
+            --glow-purple: rgba(168, 85, 247, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated Grid Background */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Gradient Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .orb-1 {
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-purple), transparent);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            bottom: -300px;
+            left: -300px;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, var(--accent-blue), transparent);
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header - Strike Inspired */
+        header {
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section - Strike Style */
+        .hero {
+            padding: 140px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 28px;
+            letter-spacing: -2px;
+        }
+
+        .hero-content h1 .gradient-text {
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 80px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--dark-bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(0, 240, 255, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Terminal Window */
+        .terminal-window {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 700px;
+            margin: 0 auto;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .terminal-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.3s; }
+        .terminal-line:nth-child(2) { animation-delay: 0.6s; }
+        .terminal-line:nth-child(3) { animation-delay: 0.9s; }
+        .terminal-line:nth-child(4) { animation-delay: 1.2s; }
+        .terminal-line:nth-child(5) { animation-delay: 1.5s; }
+        .terminal-line:nth-child(6) { animation-delay: 1.8s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .prompt { color: var(--accent-cyan); }
+        .command { color: var(--accent-purple); }
+        .output { color: var(--text-secondary); }
+        .success { color: #00ff88; }
+
+        /* Trusted By Section */
+        .trusted-by {
+            padding: 80px 0 60px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .trusted-label {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .logo-strip {
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(
+                to right,
+                transparent,
+                black 10%,
+                black 90%,
+                transparent
+            );
+            -webkit-mask-image: linear-gradient(
+                to right,
+                transparent,
+                black 10%,
+                black 90%,
+                transparent
+            );
+        }
+
+        .logo-track {
+            display: flex;
+            gap: 80px;
+            animation: scroll 40s linear infinite;
+            width: fit-content;
+        }
+
+        .logo-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .client-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: default;
+            user-select: none;
+        }
+
+        .client-logo:hover {
+            color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* Stats Section - Strike Style */
+        .stats {
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 48px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 40px 24px;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: block;
+            letter-spacing: -1px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-context {
+            font-size: 12px;
+            color: rgba(136, 146, 176, 0.6);
+            line-height: 1.6;
+            margin-top: 8px;
+            display: block;
+            font-weight: 400;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 120px 0;
+        }
+
+        .section-header {
+            max-width: 700px;
+            margin: 0 auto 80px;
+            text-align: center;
+        }
+
+        .section-label {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            padding: 40px 32px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 20px;
+            color: var(--accent-blue);
+            font-weight: 400;
+        }
+
+        .service-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        .service-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Expertise Section */
+        .expertise {
+            padding: 120px 0;
+            background: linear-gradient(180deg, transparent, rgba(168, 85, 247, 0.02), transparent);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 64px;
+        }
+
+        .expertise-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 48px 40px;
+            transition: all 0.3s ease;
+        }
+
+        .expertise-item:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .expertise-number {
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .expertise-label {
+            font-size: 18px;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        .expertise-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Certifications Section */
+        .certifications {
+            padding: 80px 0;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(180deg, rgba(168, 85, 247, 0.02), transparent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cert-label {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .cert-strip {
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(
+                to right,
+                transparent,
+                black 10%,
+                black 90%,
+                transparent
+            );
+            -webkit-mask-image: linear-gradient(
+                to right,
+                transparent,
+                black 10%,
+                black 90%,
+                transparent
+            );
+        }
+
+        .cert-track {
+            display: flex;
+            gap: 60px;
+            animation: scroll 35s linear infinite;
+            width: fit-content;
+        }
+
+        .cert-track:hover {
+            animation-play-state: paused;
+        }
+
+        .cert-badge {
+            font-size: 24px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: default;
+            user-select: none;
+        }
+
+        .cert-badge:hover {
+            color: rgba(0, 240, 255, 0.7);
+            transform: scale(1.05);
+        }
+
+        /* Process Section */
+        .process {
+            padding: 120px 0;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .process-step {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 40px 28px;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .process-number {
+            font-size: 12px;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .process-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        .process-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 140px 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-highlight {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 20px;
+            color: var(--accent-blue);
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            font-weight: 600;
+        }
+
+        .cta-section h2 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .container { padding: 0 40px; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 48px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-grid { grid-template-columns: 1fr; }
+            .expertise-grid { grid-template-columns: 1fr; }
+            .process-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .cta-group { flex-direction: column; align-items: center; }
+            .footer-content { flex-direction: column; gap: 24px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Zarqen</div>
+                <ul class="nav-links">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#expertise">Expertise</a></li>
+                    <li><a href="#process">Methodology</a></li>
+                    <li><a href="/blogs.html">Blogs</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>⚡</span>
+                    <span>Elite Security Engineering</span>
+                </div>
+                <h1>
+                    <span class="gradient-text">Precision security.</span><br>
+                    Relentless testing.<br>
+                    Zero compromise.
+                </h1>
+                <p class="hero-subtitle">We systematically eliminate vulnerabilities across your entire technology stack through expert-driven attack simulation, continuous testing, and architectural mastery.</p>
+                <div class="cta-group">
+                    <a href="#contact" class="btn btn-primary">Request Assessment</a>
+                    <a href="#services" class="btn btn-secondary">View Services</a>
+                </div>
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <div class="terminal-dot"></div>
+                            <div class="terminal-dot"></div>
+                            <div class="terminal-dot"></div>
+                        </div>
+                        <div class="terminal-title">secureforge_scan_v2.0</div>
+                    </div>
+                    <div class="terminal-line"><span class="prompt">$</span> <span class="command">secureforge --deep-scan --all-layers</span></div>
+                    <div class="terminal-line"><span class="output">Analyzing infrastructure...</span></div>
+                    <div class="terminal-line"><span class="success">✓ Code review complete</span></div>
+                    <div class="terminal-line"><span class="success">✓ Cloud posture validated</span></div>
+                    <div class="terminal-line"><span class="success">✓ Container security verified</span></div>
+                    <div class="terminal-line"><span class="success">Status: SECURED</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="trusted-by">
+        <div class="container">
+            <div class="trusted-label">Trusted by Industry Leaders</div>
+            <div class="logo-strip">
+                <div class="logo-track">
+                    <div class="client-logo">Hitachi</div>
+                    <div class="client-logo">Ethos</div>
+                    <div class="client-logo">OLX</div>
+                    <div class="client-logo">VistaPath</div>
+                    <div class="client-logo">Comun</div>
+                    <div class="client-logo">Apalazo</div>
+                    <div class="client-logo">Credicorp</div>
+                    <div class="client-logo">Kueski</div>
+                    <div class="client-logo">Yape</div>
+                    <div class="client-logo">ThirtyMadison</div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="client-logo">Hitachi</div>
+                    <div class="client-logo">Ethos</div>
+                    <div class="client-logo">OLX</div>
+                    <div class="client-logo">VistaPath</div>
+                    <div class="client-logo">Comun</div>
+                    <div class="client-logo">Apalazo</div>
+                    <div class="client-logo">Credicorp</div>
+                    <div class="client-logo">Kueski</div>
+                    <div class="client-logo">Yape</div>
+                    <div class="client-logo">ThirtyMadison</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Vulnerabilities Discovered</span>
+                    <span class="stat-context">Critical and high-severity findings across client environments</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-label">Organizations Secured</span>
+                    <span class="stat-context">From startups to Fortune 500 enterprises</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-label">Industries Served</span>
+                    <span class="stat-context">Fintech, healthcare, e-commerce, SaaS, and beyond</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">7+ Years</span>
+                    <span class="stat-label">Combined Experience</span>
+                    <span class="stat-context">Elite security researchers and penetration testers</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Core Capabilities</div>
+                <h2 class="section-title">Comprehensive Security Engineering</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">◆</div>
+                    <h3 class="service-title">Application Security</h3>
+                    <p class="service-description">Deep-dive analysis of web, mobile, and desktop applications through manual testing, automated scanning, and architectural review.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">▣</div>
+                    <h3 class="service-title">DevSecOps Integration</h3>
+                    <p class="service-description">Systematic security automation embedded throughout your development pipeline with continuous validation.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◈</div>
+                    <h3 class="service-title">Code Review</h3>
+                    <p class="service-description">Security-focused source code analysis identifying vulnerabilities before they reach production environments.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◉</div>
+                    <h3 class="service-title">Cloud Security</h3>
+                    <p class="service-description">Comprehensive infrastructure assessment across AWS, Azure, and GCP including misconfigurations and IAM policies.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◇</div>
+                    <h3 class="service-title">Mobile Security</h3>
+                    <p class="service-description">iOS and Android application penetration testing covering reverse engineering and runtime manipulation.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◐</div>
+                    <h3 class="service-title">Container Security</h3>
+                    <p class="service-description">Docker and Kubernetes security hardening through image scanning and orchestration configuration review.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◪</div>
+                    <h3 class="service-title">AI/ML Security</h3>
+                    <p class="service-description">Emerging threat assessment for machine learning systems including model poisoning and adversarial attacks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="expertise" id="expertise">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Proven Track Record</div>
+                <h2 class="section-title">Evidence-Based Excellence</h2>
+            </div>
+            <div class="expertise-grid">
+                <div class="expertise-item">
+                    <div class="expertise-number">200+</div>
+                    <div class="expertise-label">Security Assessments</div>
+                    <p class="expertise-description">Comprehensive penetration tests and security audits across Fortune 500 enterprises and critical infrastructure systems.</p>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-number">10+</div>
+                    <div class="expertise-label">CVE Discoveries</div>
+                    <p class="expertise-description">Responsible disclosure of critical vulnerabilities in major software platforms, contributing to global security research.</p>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-number">10+</div>
+                    <div class="expertise-label">Published Research</div>
+                    <p class="expertise-description">Technical blog posts and whitepapers detailing novel attack vectors and defensive techniques.</p>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-number">10+</div>
+                    <div class="expertise-label">Professional Certifications</div>
+                    <p class="expertise-description">Team credentials including OSCP, OSWE, GXPN, AWS Security Specialty, and expert certifications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="certifications">
+        <div class="container">
+            <div class="cert-label">Industry-Recognized Certifications</div>
+            <div class="cert-strip">
+                <div class="cert-track">
+                    <div class="cert-badge">OSCP</div>
+                    <div class="cert-badge">eWPTX</div>
+                    <div class="cert-badge">CREST</div>
+                    <div class="cert-badge">CPTS</div>
+                    <div class="cert-badge">AWS Security</div>
+                    <div class="cert-badge">OSWE</div>
+                    <div class="cert-badge">GXPN</div>
+                    <div class="cert-badge">CEH</div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="cert-badge">OSCP</div>
+                    <div class="cert-badge">eWPTX</div>
+                    <div class="cert-badge">CREST</div>
+                    <div class="cert-badge">CPTS</div>
+                    <div class="cert-badge">AWS Security</div>
+                    <div class="cert-badge">OSWE</div>
+                    <div class="cert-badge">GXPN</div>
+                    <div class="cert-badge">CEH</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="process">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Our Methodology</div>
+                <h2 class="section-title">Systematic Protection Protocol</h2>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="process-number">01 // RECONNAISSANCE</div>
+                    <h3 class="process-title">Deep Discovery</h3>
+                    <p class="process-description">Comprehensive attack surface mapping and threat modeling to establish security baselines.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-number">02 // ASSESSMENT</div>
+                    <h3 class="process-title">Systematic Testing</h3>
+                    <p class="process-description">Manual exploitation combined with automated scanning across all architectural layers.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-number">03 // ANALYSIS</div>
+                    <h3 class="process-title">Risk Quantification</h3>
+                    <p class="process-description">Detailed reporting with CVSS scoring and business impact assessment for prioritization.</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-number">04 // REMEDIATION</div>
+                    <h3 class="process-title">Guided Resolution</h3>
+                    <p class="process-description">Hands-on support for vulnerability remediation with code-level fixes and architectural recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-highlight">Consultation Available</div>
+                <h2>Transform Vulnerabilities Into Strengths</h2>
+                <p>Every unassessed application is an unquantified risk. Our expert team delivers actionable security analysis within 48 hours of engagement.</p>
+                <a 
+  href="connect-now.html"
+  class="btn btn-primary"
+  rel="noopener noreferrer">
+  Request Assessment
+</a>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">© 2025 Zarqen. All rights reserved.</div>
+                <div class="footer-links">
+                    <a href="#privacy">Privacy</a>
+                    <a href="#terms">Terms</a>
+                    <a href="#blog">Research</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
