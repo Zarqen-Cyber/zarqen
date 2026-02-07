@@ -46,7 +46,7 @@ export const FAQSection = () => {
               Answers to Your Questions
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
             <WordReveal text="FAQ" />
           </h2>
         </ScrollReveal>

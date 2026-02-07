@@ -33,13 +33,13 @@ export const WhyUsSection = () => {
     <section id="why-us" className="section-padding bg-secondary/30">
       <div className="container-wide">
         {/* Section Header */}
-        <ScrollReveal className="text-center mb-20">
+        <ScrollReveal className="text-center mb-12">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-secondary border border-border mb-6">
             <span className="text-sm font-medium text-foreground uppercase tracking-wider">
               Why Us?
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
             <WordReveal text="Compliance & Security" />
             <span className="block mt-2">
               <WordReveal text="Assessments That Actually" delay={0.2} />
@@ -48,6 +48,25 @@ export const WhyUsSection = () => {
               <WordReveal text="Get You Through Audits" delay={0.4} gradient />
             </span>
           </h2>
+        </ScrollReveal>
+
+        {/* Company Description */}
+        <ScrollReveal className="text-center mb-16 max-w-4xl mx-auto" delay={0.2}>
+          <p className="text-lg md:text-xl text-foreground leading-relaxed">
+            Zarqen is a security consultancy for SaaS startups. We get companies audit-ready in 120 days so they can close $15K–$50K MRR enterprise deals. We combine real penetration testing with compliance frameworks turning security from a sales blocker into a revenue driver.
+          </p>
+        </ScrollReveal>
+
+        {/* Compliance Coverage */}
+        <ScrollReveal className="text-center mb-20 max-w-4xl mx-auto" delay={0.3}>
+          <div className="bg-white rounded-3xl p-8 md:p-10 border border-border/50 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.08)]">
+            <h3 className="text-xl md:text-2xl font-bold text-foreground mb-4">
+              End-to-End Certification
+            </h3>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+              Our comprehensive support includes gap assessment, implementation support, and helping you face external auditors with complete audit prep - everything you need from start to certification.
+            </p>
+          </div>
         </ScrollReveal>
 
         {/* Features Grid */}

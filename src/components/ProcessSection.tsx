@@ -38,7 +38,7 @@ export const ProcessSection = () => {
               How It Works
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             <WordReveal text="Simple, Clear," />
             {" "}
             <WordReveal text="Straightforward" delay={0.2} gradient />

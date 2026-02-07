@@ -20,7 +20,7 @@ export const HeroSection = () => {  return (
           </motion.div>
 
           {/* Headline — word-by-word reveal */}
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight text-foreground leading-[1.08] mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-bold tracking-tight text-foreground leading-[1.08] mb-8">
             <WordReveal text="Get" delay={0.15} />
             {" "}
             <WordReveal text="Audit-Ready" delay={0.25} gradient />
@@ -36,7 +36,7 @@ export const HeroSection = () => {  return (
             transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
-            SOC2, ISO 27001, HIPAA, PCI-DSS, GDPR — so compliance stops blocking your enterprise deals.
+            Add $30k–$50K in new monthly revenue - SOC 2, ISO 27001, HIPAA, GDPR compliance that closes enterprise deals.
           </motion.p>
 
           {/* CTA Buttons */}

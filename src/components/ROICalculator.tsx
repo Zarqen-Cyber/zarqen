@@ -1,48 +1,66 @@
 import { useState } from "react";
 import { ScrollReveal, WordReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, DollarSign, Clock, TrendingUp } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const frameworkTimelines = {
-  "SOC2 Type I": 2,
-  "SOC2 Type II": 3,
-  "ISO 27001": 3,
-  "HIPAA": 2.5,
-  "PCI-DSS": 2.5,
-  "GDPR": 2,
-};
-
 export const ROICalculator = () => {
-  const [framework, setFramework] = useState<string>("");
-  const [stage, setStage] = useState<string>("");
-  const [dealSize, setDealSize] = useState<string>("");
-  const [dealsStuck, setDealsStuck] = useState<string>("");
+  const [dealSize, setDealSize] = useState<string>("5000");
+  const [dealsStuck, setDealsStuck] = useState<string>("4");
+  const [hourlyValue, setHourlyValue] = useState<string>("200");
 
   const calculateROI = () => {
     const deal = parseFloat(dealSize) || 0;
     const deals = parseFloat(dealsStuck) || 0;
-    const revenueStuck = deal * deals;
-    const timeline = framework ? frameworkTimelines[framework as keyof typeof frameworkTimelines] : 2;
-    const monthlyCost = revenueStuck / 12;
+    const hourly = parseFloat(hourlyValue) || 0;
+
+    // Current Situation
+    const revenueStuck = deal * deals * 12; // ARR
+    const bleedingMonthly = deal * deals; // MRR
+
+    // Investment
+    const investmentMin = 20000;
+    const investmentMax = 25000;
+
+    // What You Gain
+    const revenueUnlocked = deal * 12; // 1 deal closes
+    const riskEliminated = 38000; // Fixed amount
+    const speedAdvantage = 40000; // Fixed amount
+
+    // Calculations
+    const totalValue = revenueUnlocked + riskEliminated + speedAdvantage;
+    const netGain = totalValue - investmentMax;
+    const roi = ((netGain / investmentMax) * 100).toFixed(2);
 
     return {
       revenueStuck,
-      timeline,
-      monthlyCost,
+      bleedingMonthly,
+      investmentMin,
+      investmentMax,
+      revenueUnlocked,
+      riskEliminated,
+      speedAdvantage,
+      totalValue,
+      netGain,
+      roi,
     };
   };
 
-  const { revenueStuck, timeline, monthlyCost } = calculateROI();
-  const hasInput = framework && stage && dealSize && dealsStuck;
+  const {
+    revenueStuck,
+    bleedingMonthly,
+    investmentMin,
+    investmentMax,
+    revenueUnlocked,
+    riskEliminated,
+    speedAdvantage,
+    totalValue,
+    netGain,
+    roi,
+  } = calculateROI();
+  
+  const hasInput = dealSize && dealsStuck && hourlyValue;
 
   return (
     <section className="section-padding">
@@ -54,7 +72,7 @@ export const ROICalculator = () => {
               Calculate Your ROI
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
             <WordReveal text="See How Much Revenue" />
             <span className="block mt-2">
               <WordReveal text="Is Stuck in Your Pipeline" delay={0.2} gradient />
@@ -63,145 +81,159 @@ export const ROICalculator = () => {
         </ScrollReveal>
 
         {/* Calculator Card */}
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl border border-border/50 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] overflow-hidden">
-            <div className="grid lg:grid-cols-2 gap-0">
-              {/* Left: Inputs */}
-              <div className="p-10 lg:border-r border-border/50">
-                <h3 className="text-2xl font-bold text-foreground mb-8">Your Situation</h3>
-                
-                <StaggerContainer className="space-y-6" stagger={0.08}>
-                  <StaggerItem>
-                    <Label htmlFor="framework" className="text-sm font-medium text-foreground mb-2 block">
-                      Compliance Framework
-                    </Label>
-                    <Select value={framework} onValueChange={setFramework}>
-                      <SelectTrigger id="framework" className="w-full">
-                        <SelectValue placeholder="Select framework" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="SOC2 Type I">SOC2 Type I</SelectItem>
-                        <SelectItem value="SOC2 Type II">SOC2 Type II</SelectItem>
-                        <SelectItem value="ISO 27001">ISO 27001</SelectItem>
-                        <SelectItem value="HIPAA">HIPAA</SelectItem>
-                        <SelectItem value="PCI-DSS">PCI-DSS</SelectItem>
-                        <SelectItem value="GDPR">GDPR</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </StaggerItem>
-
-                  <StaggerItem>
-                    <Label htmlFor="stage" className="text-sm font-medium text-foreground mb-2 block">
-                      Company Stage
-                    </Label>
-                    <Select value={stage} onValueChange={setStage}>
-                      <SelectTrigger id="stage" className="w-full">
-                        <SelectValue placeholder="Select stage" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Seed">Seed</SelectItem>
-                        <SelectItem value="Series A">Series A</SelectItem>
-                        <SelectItem value="Series B">Series B</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </StaggerItem>
-
+            <div className="p-8 md:p-10">
+              {/* Input Fields */}
+              <div className="mb-10">
+                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">Input Fields</h3>
+                <StaggerContainer className="grid md:grid-cols-3 gap-6" stagger={0.08}>
                   <StaggerItem>
                     <Label htmlFor="dealSize" className="text-sm font-medium text-foreground mb-2 block">
-                      Average Deal Size ($)
+                      Average enterprise deal size (MRR):
                     </Label>
-                    <Input
-                      id="dealSize"
-                      type="number"
-                      placeholder="80000"
-                      min="0"
-                      value={dealSize}
-                      onChange={(e) => setDealSize(e.target.value)}
-                      className="w-full"
-                    />
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                      <Input
+                        id="dealSize"
+                        type="number"
+                        value={dealSize}
+                        onChange={(e) => setDealSize(e.target.value)}
+                        className="pl-7"
+                      />
+                    </div>
                   </StaggerItem>
 
                   <StaggerItem>
                     <Label htmlFor="dealsStuck" className="text-sm font-medium text-foreground mb-2 block">
-                      Number of Deals Stuck
+                      Deals stuck in security review:
                     </Label>
                     <Input
                       id="dealsStuck"
                       type="number"
-                      placeholder="3"
-                      min="0"
                       value={dealsStuck}
                       onChange={(e) => setDealsStuck(e.target.value)}
-                      className="w-full"
                     />
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <Label htmlFor="hourlyValue" className="text-sm font-medium text-foreground mb-2 block">
+                      Your hourly value as founder:
+                    </Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                      <Input
+                        id="hourlyValue"
+                        type="number"
+                        value={hourlyValue}
+                        onChange={(e) => setHourlyValue(e.target.value)}
+                        className="pl-7"
+                      />
+                    </div>
                   </StaggerItem>
                 </StaggerContainer>
               </div>
 
-              {/* Right: Results */}
-              <div className="p-10 bg-gradient-to-br from-primary to-primary/90 text-primary-foreground">
-                <h3 className="text-2xl font-bold mb-8">Your ROI</h3>
-                
-                {hasInput ? (
-                  <div className="space-y-8">
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <DollarSign className="w-5 h-5 opacity-80" />
-                        <span className="text-sm opacity-80 font-medium">Revenue Stuck</span>
+              {hasInput && (
+                <>
+                  {/* Current Situation */}
+                  <div className="mb-10 pb-10 border-b border-border">
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">💰 Your Current Situation</h3>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Revenue Stuck</span>
+                        <span className="text-2xl font-bold text-foreground">${revenueStuck.toLocaleString()}</span>
                       </div>
-                      <p className="text-4xl font-bold">
-                        ${revenueStuck.toLocaleString()}
-                      </p>
-                      <p className="text-sm opacity-80 mt-1">stuck in your pipeline</p>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Clock className="w-5 h-5 opacity-80" />
-                        <span className="text-sm opacity-80 font-medium">Time to Audit-Ready</span>
+                      <div className="text-sm text-muted-foreground md:col-span-2">
+                        ({dealsStuck} deals × ${parseFloat(dealSize).toLocaleString()} MRR × 12 months ARR)
                       </div>
-                      <p className="text-4xl font-bold">
-                        ~{timeline} months
-                      </p>
-                      <p className="text-sm opacity-80 mt-1">with our support</p>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <TrendingUp className="w-5 h-5 opacity-80" />
-                        <span className="text-sm opacity-80 font-medium">Cost of Delay</span>
+                      
+                      <div className="flex justify-between items-center md:col-span-2">
+                        <span className="text-muted-foreground">Bleeding Monthly</span>
+                        <span className="text-2xl font-bold text-foreground">${bleedingMonthly.toLocaleString()}</span>
                       </div>
-                      <p className="text-4xl font-bold">
-                        ${Math.round(monthlyCost).toLocaleString()}/mo
-                      </p>
-                      <p className="text-sm opacity-80 mt-1">every month you wait</p>
-                    </div>
-
-                    <div className="pt-6 border-t border-primary-foreground/20">
-                      <p className="text-base leading-relaxed mb-6">
-                        Every month you wait = <span className="font-bold">${Math.round(monthlyCost).toLocaleString()}</span> not closing
-                      </p>
-                      <Button
-                        size="lg"
-                        variant="secondary"
-                        className="w-full rounded-full py-6 gap-2 group font-semibold"
-                        asChild
-                      >
-                        <a href="#contact">
-                          Book Your Scoping Call
-                          <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                        </a>
-                      </Button>
+                      <div className="text-sm text-muted-foreground md:col-span-2">
+                        ({dealsStuck} deals × ${parseFloat(dealSize).toLocaleString()} MRR)
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <div className="flex items-center justify-center h-full min-h-[400px]">
-                    <p className="text-center text-primary-foreground/70 text-lg">
-                      Fill in your details to see your ROI
-                    </p>
+
+                  {/* What You Gain */}
+                  <div className="mb-10">
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">🟢 What You Gain with Zarqen</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center pb-4 border-b border-border">
+                        <span className="text-muted-foreground">Investment</span>
+                        <span className="text-xl font-bold text-foreground">${investmentMin.toLocaleString()} - ${investmentMax.toLocaleString()}</span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Revenue Unlocked</span>
+                        <span className="text-xl font-bold text-foreground">${revenueUnlocked.toLocaleString()}</span>
+                      </div>
+                      <div className="text-sm text-muted-foreground pl-4">
+                        (1 deal closes × ${parseFloat(dealSize).toLocaleString()} MRR × 12 months)
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Risk Eliminated</span>
+                        <span className="text-xl font-bold text-foreground">${riskEliminated.toLocaleString()}</span>
+                      </div>
+                      <div className="text-sm text-muted-foreground pl-4">
+                        (Avoid failed audit costs + rework)
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Speed Advantage</span>
+                        <span className="text-xl font-bold text-foreground">${speedAdvantage.toLocaleString()}</span>
+                      </div>
+                      <div className="text-sm text-muted-foreground pl-4">
+                        (Close deals 2 months faster)
+                      </div>
+
+                      <div className="border-t-2 border-foreground pt-4 mt-6">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-bold text-foreground text-lg">Total Value</span>
+                          <span className="text-2xl font-bold text-foreground">${totalValue.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-bold text-foreground text-lg">Net Gain</span>
+                          <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                            ${netGain.toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-foreground text-lg">ROI</span>
+                          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                            {roi}%
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="bg-secondary/50 rounded-2xl p-6 mt-6">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-foreground">Timeline</span>
+                          <span className="text-xl font-bold text-foreground">120 days</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
+
+                  {/* CTA */}
+                  <div className="pt-6 border-t border-border">
+                    <Button
+                      size="lg"
+                      className="w-full md:w-auto rounded-full px-10 py-6 text-base gap-2 group font-semibold"
+                      asChild
+                    >
+                      <a href="#contact">
+                        Book Your Scoping Call
+                        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                      </a>
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

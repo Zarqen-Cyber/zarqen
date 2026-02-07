@@ -12,7 +12,7 @@ export const CTASection = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/90" />
 
             <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
                 <WordReveal text="Stop Losing Deals" />
                 <span className="block mt-2">
                   <WordReveal text="to Compliance Delays" delay={0.15} />

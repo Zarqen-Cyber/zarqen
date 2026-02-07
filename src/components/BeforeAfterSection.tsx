@@ -39,7 +39,7 @@ export const BeforeAfterSection = () => {
               Before and After
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight max-w-4xl mx-auto mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight max-w-4xl mx-auto mb-4">
             <WordReveal text="What Our Clients Face" />
             <span className="block mt-2">
               <WordReveal text="Before Working With Us!" delay={0.2} />

@@ -43,7 +43,7 @@ export const CalendlySection = () => {
                 Ready to Get Started?
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
               <WordReveal text="Ready to Get" />
               <span className="block mt-2">
                 <WordReveal text="Through Compliance?" delay={0.2} gradient />
