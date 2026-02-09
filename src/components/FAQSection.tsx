@@ -14,6 +14,11 @@ const faqs = [
       "Depends on your situation and what you need. We figure this out on the scoping call.",
   },
   {
+    question: "Does every compliance certification take 120 days to get audit-ready?",
+    answer:
+      "Not necessarily. The timeline depends on your company's size, current security posture, and the framework you're pursuing. Some companies get audit-ready faster, others may need more time. We'll provide a realistic timeline based on your specific situation during our scoping call.",
+  },
+  {
     question: "Which compliance framework do I need?",
     answer:
       "Depends on your industry and customers. We help you figure this out on the scoping call.",

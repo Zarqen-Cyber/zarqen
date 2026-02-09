@@ -3,9 +3,10 @@ import { PageBackground } from "@/components/PageBackground";
 import { HeroSection } from "@/components/HeroSection";
 import { BeforeAfterSection } from "@/components/BeforeAfterSection";
 import { WhyUsSection } from "@/components/WhyUsSection";
-import { ProcessSection } from "@/components/ProcessSection";
-import { DeliverablesSection } from "@/components/DeliverablesSection";
 import { ROICalculator } from "@/components/ROICalculator";
+import { ProcessSection } from "@/components/ProcessSection";
+import { AuditReadySection } from "@/components/AuditReadySection";
+import { AboutSection } from "@/components/AboutSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CalendlySection } from "@/components/CalendlySection";
 import { CTASection } from "@/components/CTASection";
@@ -20,9 +21,10 @@ const Index = () => {
         <HeroSection />
         <BeforeAfterSection />
         <WhyUsSection />
-        <ProcessSection />
-        <DeliverablesSection />
         <ROICalculator />
+        <ProcessSection />
+        <AuditReadySection />
+        <AboutSection />
         <FAQSection />
         <CalendlySection />
         <CTASection />

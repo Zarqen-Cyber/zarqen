@@ -33,7 +33,7 @@ export const BeforeAfterSection = () => {
     <section className="section-padding bg-gradient-to-b from-white via-gray-50/30 to-white">
       <div className="container-wide">
         {/* Section Header */}
-        <ScrollReveal className="text-center mb-20">
+        <ScrollReveal className="text-center mb-16">
           <div className="inline-flex items-center px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 mb-6">
             <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
               Before and After
@@ -47,52 +47,45 @@ export const BeforeAfterSection = () => {
           </h2>
         </ScrollReveal>
 
-        {/* Comparison Grid */}
-        <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
-          {/* Without Us Column */}
-          <div className="space-y-6">
-            <div className="text-center lg:text-left mb-10">
-              <h3 className="text-4xl font-bold text-red-600 mb-3">Without Us</h3>
-              <p className="text-muted-foreground text-lg">Common challenges our clients face</p>
+        {/* Table Format */}
+        <ScrollReveal className="max-w-5xl mx-auto" delay={0.15}>
+          <div className="bg-white rounded-3xl border border-border/50 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.08)] overflow-hidden">
+            {/* Table Header */}
+            <div className="grid grid-cols-2">
+              <div className="bg-red-50 px-6 md:px-8 py-5 border-b border-border/30 border-r border-r-border/30">
+                <h3 className="text-xl md:text-2xl font-bold text-red-600 text-center">Without Us</h3>
+              </div>
+              <div className="bg-green-50 px-6 md:px-8 py-5 border-b border-border/30">
+                <h3 className="text-xl md:text-2xl font-bold text-green-600 text-center">With Zarqen</h3>
+              </div>
             </div>
-            <StaggerContainer className="space-y-4" stagger={0.06}>
-              {comparisons.map((item, index) => (
-                <StaggerItem key={`before-${index}`}>
-                  <div className="bg-red-50/50 rounded-xl p-5 border-l-4 border-red-400 hover:bg-red-50 transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <X className="w-4 h-4 text-red-600" />
-                      </div>
-                      <p className="text-base md:text-lg text-foreground leading-relaxed">{item.before}</p>
-                    </div>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
 
-          {/* With Us Column */}
-          <div className="space-y-6">
-            <div className="text-center lg:text-left mb-10">
-              <h3 className="text-4xl font-bold text-green-600 mb-3">With Us</h3>
-              <p className="text-muted-foreground text-lg">How we transform your business</p>
-            </div>
-            <StaggerContainer className="space-y-4" stagger={0.06} delay={0.15}>
+            {/* Table Rows */}
+            <StaggerContainer stagger={0.06}>
               {comparisons.map((item, index) => (
-                <StaggerItem key={`after-${index}`}>
-                  <div className="bg-green-50/50 rounded-xl p-5 border-l-4 border-green-400 hover:bg-green-50 transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-4 h-4 text-green-600" />
+                <StaggerItem key={index}>
+                  <div className={`grid grid-cols-2 ${index < comparisons.length - 1 ? 'border-b border-border/30' : ''}`}>
+                    {/* Before */}
+                    <div className="px-5 md:px-8 py-5 border-r border-border/30 flex items-start gap-3 hover:bg-red-50/30 transition-colors duration-200">
+                      <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <X className="w-3.5 h-3.5 text-red-600" />
                       </div>
-                      <p className="text-base md:text-lg text-foreground font-medium leading-relaxed">{item.after}</p>
+                      <p className="text-sm md:text-base text-foreground leading-relaxed">{item.before}</p>
+                    </div>
+
+                    {/* After */}
+                    <div className="px-5 md:px-8 py-5 flex items-start gap-3 hover:bg-green-50/30 transition-colors duration-200">
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3.5 h-3.5 text-green-600" />
+                      </div>
+                      <p className="text-sm md:text-base text-foreground font-medium leading-relaxed">{item.after}</p>
                     </div>
                   </div>
                 </StaggerItem>
               ))}
             </StaggerContainer>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

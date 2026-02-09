@@ -1,30 +1,36 @@
 import { ScrollReveal, WordReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
-import { GitMerge, UserCheck, FileCheck, Phone } from "lucide-react";
+import { GitMerge, UserCheck, FileCheck, Phone, ShieldCheck } from "lucide-react";
 
 const features = [
   {
-    icon: GitMerge,
-    title: "Compliance + Pentest Together",
+    icon: ShieldCheck,
+    title: "End-to-End Audit Support",
     description:
-      "Most vendors do one or the other. We help you navigate the full compliance journey — and deliver the penetration testing report your auditor requires.",
+      "Gap assessment, remediation guidance, evidence collection, implementation support and auditor prep, coordination. Everything you need from initial assessment to certification - no gaps, no surprises.",
+  },
+  {
+    icon: GitMerge,
+    title: "Pentest + Compliance Together",
+    description:
+      "Most firms do one or the other. We conduct the security assessment AND build the compliance framework your auditor needs. One engagement, complete coverage.",
   },
   {
     icon: UserCheck,
-    title: "Senior Consultants, Not Junior Analysts",
+    title: "Senior Security Consultants",
     description:
-      "Experienced security professionals conduct every assessment. Manual testing that finds real vulnerabilities — not automated scanner output that auditors reject.",
+      "Every assessment is conducted by experienced security professionals with 4+ years of hands-on testing. Manual security testing that finds business logic flaws, authentication bypasses, and vulnerabilities automated scanners miss.",
   },
   {
     icon: FileCheck,
-    title: "Reports Auditors Accept",
+    title: "Auditor-Ready Reports",
     description:
-      "Formatted specifically for SOC2, ISO 27001, HIPAA, PCI-DSS, GDPR. Executive summary, CVSS scoring, remediation guidance. Ready for your auditor.",
+      "Compliance-grade documentation formatted for SOC 2, ISO 27001, HIPAA, PCI-DSS, and GDPR requirements. Executive summaries, CVSS scoring, detailed remediation guidance - exactly what auditors expect.",
   },
   {
     icon: Phone,
-    title: "Direct Access",
+    title: "Direct Communication",
     description:
-      "You talk to us directly. No account managers, no support tickets. Questions get answered.",
+      "Work directly with your security consultant. No account managers, no ticketing systems. Questions answered same-day, issues resolved in real-time.",
   },
 ];
 
@@ -40,12 +46,9 @@ export const WhyUsSection = () => {
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
-            <WordReveal text="Compliance & Security" />
+            <WordReveal text="Stop Losing Enterprise Deals" />
             <span className="block mt-2">
-              <WordReveal text="Assessments That Actually" delay={0.2} />
-            </span>
-            <span className="block mt-2">
-              <WordReveal text="Get You Through Audits" delay={0.4} gradient />
+              <WordReveal text="to Security Reviews!" delay={0.2} gradient />
             </span>
           </h2>
         </ScrollReveal>
@@ -57,30 +60,18 @@ export const WhyUsSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* Compliance Coverage */}
-        <ScrollReveal className="text-center mb-20 max-w-4xl mx-auto" delay={0.3}>
-          <div className="bg-white rounded-3xl p-8 md:p-10 border border-border/50 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.08)]">
-            <h3 className="text-xl md:text-2xl font-bold text-foreground mb-4">
-              End-to-End Certification
-            </h3>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              Our comprehensive support includes gap assessment, implementation support, and helping you face external auditors with complete audit prep - everything you need from start to certification.
-            </p>
-          </div>
-        </ScrollReveal>
-
         {/* Features Grid */}
-        <StaggerContainer className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto" stagger={0.1}>
+        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto" stagger={0.1}>
           {features.map((feature, index) => (
             <StaggerItem key={index}>
               <div className="bg-white rounded-3xl p-10 border border-border/50 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-500 h-full group">
                 <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="w-7 h-7 text-primary-foreground" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">
+                <p className="text-muted-foreground text-base leading-relaxed">
                   {feature.description}
                 </p>
               </div>
