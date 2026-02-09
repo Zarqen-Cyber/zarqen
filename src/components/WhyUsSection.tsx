@@ -53,13 +53,6 @@ export const WhyUsSection = () => {
           </h2>
         </ScrollReveal>
 
-        {/* Company Description */}
-        <ScrollReveal className="text-center mb-16 max-w-4xl mx-auto" delay={0.2}>
-          <p className="text-lg md:text-xl text-foreground leading-relaxed">
-            Zarqen is a security consultancy for SaaS startups. We get companies audit-ready in 120 days so they can close $15K–$50K MRR enterprise deals. We combine real penetration testing with compliance frameworks turning security from a sales blocker into a revenue driver.
-          </p>
-        </ScrollReveal>
-
         {/* Features Grid */}
         <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto" stagger={0.1}>
           {features.map((feature, index) => (
