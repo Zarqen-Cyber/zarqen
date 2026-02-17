@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zarqen — Compliance ROI Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #06080f;
+  --surface: #0d1117;
+  --surface2: #131920;
+  --surface3: #1a2230;
+  --border: #1e2d3d;
+  --border2: #243445;
+  --text: #e8eef5;
+  --text2: #7a8fa6;
+  --text3: #3d5268;
+  --blue: #3b8eff;
+  --blue-dim: rgba(59,142,255,0.12);
+  --blue-glow: rgba(59,142,255,0.25);
+  --orange: #ff7c3b;
+  --orange-dim: rgba(255,124,59,0.12);
+  --red: #ff4e4e;
+  --red-dim: rgba(255,78,78,0.1);
+  --green: #2dd698;
+  --green-dim: rgba(45,214,152,0.1);
+  --yellow: #ffd23f;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* AMBIENT GLOW */
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(59,142,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* GRID */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,142,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,142,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+/* ─── NAVBAR ─── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 64px;
+}
+
+.logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.logo span {
+  color: var(--blue);
+}
+
+.nav-badge {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 4px 10px;
+  border: 1px solid var(--border2);
+}
+
+/* ─── HERO ─── */
+.hero {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 24px;
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--blue);
+  opacity: 0.4;
+}
+
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(32px, 6vw, 54px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.hero-title .highlight {
+  color: var(--blue);
+  position: relative;
+}
+
+.hero-title .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--blue);
+  opacity: 0.3;
+}
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--text2);
+  max-width: 540px;
+  margin: 0 auto 36px;
+  line-height: 1.75;
+}
+
+/* VALUE PILLS */
+.value-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  font-size: 11px;
+  color: var(--text2);
+  letter-spacing: 0.04em;
+}
+
+.pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pill-dot.blue { background: var(--blue); }
+.pill-dot.orange { background: var(--orange); }
+.pill-dot.green { background: var(--green); }
+.pill-dot.yellow { background: var(--yellow); }
+
+/* ─── SECTION ─── */
+.section {
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section.visible { opacity: 1; transform: translateY(0); }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.s-num {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border2);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.s-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  flex: 1;
+}
+
+.s-sub {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.section-body { padding: 22px 20px; }
+
+/* ─── TOGGLE BUTTONS ─── */
+.tg-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.tg-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tg-btn {
+  cursor: pointer;
+  padding: 7px 15px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+
+.tg-btn:hover { border-color: var(--text3); color: var(--text2); }
+
+.tg-btn.active {
+  border-color: var(--blue);
+  background: var(--blue-dim);
+  color: var(--blue);
+}
+
+/* ─── INPUTS ─── */
+.irow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.irow.full { grid-template-columns: 1fr; }
+
+.igrp { display: flex; flex-direction: column; gap: 7px; }
+
+.igrp label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.iwrap { position: relative; display: flex; align-items: center; }
+
+.ipfx {
+  position: absolute;
+  left: 12px;
+  color: var(--text3);
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.isfx {
+  position: absolute;
+  right: 12px;
+  color: var(--text3);
+  font-size: 10px;
+  pointer-events: none;
+  letter-spacing: 0.06em;
+  z-index: 1;
+}
+
+input[type="number"] {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+input[type="number"]:focus {
+  border-color: var(--blue);
+  background: rgba(59,142,255,0.04);
+}
+
+input.pfx { padding-left: 28px; }
+input.sfx { padding-right: 52px; }
+input.both { padding-left: 28px; padding-right: 52px; }
+
+/* HINT BOX */
+.hint-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--blue-dim);
+  border: 1px solid rgba(59,142,255,0.15);
+  margin-bottom: 16px;
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.hint-icon { color: var(--blue); flex-shrink: 0; margin-top: 1px; }
+
+/* AUDIT TOGGLE */
+.audit-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.sw {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sw input { display: none; }
+
+.sw-track {
+  position: absolute;
+  inset: 0;
+  background: var(--border2);
+  border: 1px solid var(--border2);
+  transition: all 0.2s;
+}
+
+.sw-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 14px;
+  height: 14px;
+  background: var(--text3);
+  transition: all 0.2s;
+}
+
+.sw input:checked + .sw-track { background: var(--blue-dim); border-color: var(--blue); }
+.sw input:checked ~ .sw-thumb { left: 22px; background: var(--blue); }
+
+.audit-lbl { font-size: 12px; color: var(--text2); }
+
+.audit-fields { display: none; }
+.audit-fields.open { display: block; }
+
+/* ESTIMATE BADGE */
+.estimate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  margin-bottom: 16px;
+}
+
+.estimate-lbl { font-size: 11px; color: var(--text3); }
+.estimate-val { font-size: 13px; color: var(--blue); font-weight: 500; }
+
+/* ─── RESULTS ─── */
+.results {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+}
+
+.results.visible { opacity: 1; transform: translateY(0); }
+
+.results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.results-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.results-profile {
+  font-size: 10px;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid rgba(59,142,255,0.3);
+  background: var(--blue-dim);
+}
+
+.results-body { padding: 24px 20px; }
+
+/* ZERO STATE */
+.zero {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text3);
+  font-size: 12px;
+  line-height: 2;
+}
+
+.zero-icon { font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.3; }
+
+/* LINE ITEMS */
+.li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.li.show { opacity: 1; transform: translateX(0); }
+.li:last-child { border-bottom: none; }
+
+.li-left { flex: 1; }
+.li-name { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+.li-detail { font-size: 11px; color: var(--text3); line-height: 1.5; }
+
+.li-val {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.li-val.red { color: var(--red); }
+.li-val.orange { color: var(--orange); }
+.li-val.blue { color: var(--blue); }
+.li-val.dim { color: var(--text3); }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border); margin: 4px 0 20px; }
+
+/* TOTAL BLOCK */
+.total-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.total-left {}
+.total-lbl {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+
+.total-sub { font-size: 11px; color: var(--text3); }
+
+.total-val {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--red);
+  text-align: right;
+}
+
+/* BAR CHART */
+.bar-chart {
+  margin-bottom: 20px;
+}
+
+.bar-label-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bar-track {
+  height: 8px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.bar-seg {
+  height: 100%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar-seg.red { background: var(--red); }
+.bar-seg.orange { background: var(--orange); }
+.bar-seg.blue { background: var(--blue); }
+
+.bar-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.bl-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.bl-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+.bl-dot.red { background: var(--red); }
+.bl-dot.orange { background: var(--orange); }
+.bl-dot.blue { background: var(--blue); }
+
+/* CONTEXT BOX */
+.ctx-box {
+  padding: 14px 16px;
+  background: var(--surface2);
+  border-left: 3px solid var(--blue);
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.ctx-box strong { color: var(--text); }
+
+/* FOOTER */
+.footer-note {
+  margin-top: 32px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.8;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.footer-note strong { color: var(--text2); }
+
+.zarqen-footer {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text3);
+  padding-bottom: 40px;
+}
+
+.zarqen-footer a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+@media (max-width: 540px) {
+  .irow { grid-template-columns: 1fr; }
+  .total-block { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .value-pills { gap: 8px; }
+  .hero-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Zar<span>qen</span></div>
+    <div class="nav-badge">Free Tool</div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">ROI Calculator</div>
+    <h1 class="hero-title">
+      How Much Are Compliance<br>Gaps <span class="highlight">Costing You?</span>
+    </h1>
+    <p class="hero-sub">
+      Enter your actual numbers — lost deals, delayed pipeline, and audit failures. Get an honest breakdown of your real compliance cost in under 2 minutes.
+    </p>
+    <div class="value-pills">
+      <div class="pill"><div class="pill-dot blue"></div>Uses only your numbers</div>
+      <div class="pill"><div class="pill-dot orange"></div>No made-up benchmarks</div>
+      <div class="pill"><div class="pill-dot green"></div>Audit failure estimates included</div>
+      <div class="pill"><div class="pill-dot yellow"></div>All math shown transparently</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: PROFILE -->
+  <div class="section" id="s1">
+    <div class="section-head">
+      <div class="s-num">01</div>
+      <div class="s-title">Company Profile</div>
+      <div class="s-sub">Adjusts audit failure estimates</div>
+    </div>
+    <div class="section-body">
+      <div class="tg-label">Company Stage</div>
+      <div class="tg-row">
+        <button class="tg-btn active" data-group="stage" data-val="seed" onclick="setToggle('stage','seed',this)">Seed</button>
+        <button class="tg-btn" data-group="stage" data-val="series-a" onclick="setToggle('stage','series-a',this)">Series A</button>
+        <button class="tg-btn" data-group="stage" data-val="series-b" onclick="setToggle('stage','series-b',this)">Series B</button>
+        <button class="tg-btn" data-group="stage" data-val="growth" onclick="setToggle('stage','growth',this)">Growth / PE</button>
+      </div>
+      <div class="tg-label">Industry</div>
+      <div class="tg-row">
+        <button class="tg-btn active" data-group="industry" data-val="saas" onclick="setToggle('industry','saas',this)">B2B SaaS</button>
+        <button class="tg-btn" data-group="industry" data-val="fintech" onclick="setToggle('industry','fintech',this)">Fintech</button>
+        <button class="tg-btn" data-group="industry" data-val="healthcare" onclick="setToggle('industry','healthcare',this)">Healthcare</button>
+        <button class="tg-btn" data-group="industry" data-val="other" onclick="setToggle('industry','other',this)">Other</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: LOST DEALS -->
+  <div class="section" id="s2">
+    <div class="section-head">
+      <div class="s-num">02</div>
+      <div class="s-title">Lost Deals</div>
+      <div class="s-sub">MRR gone permanently</div>
+    </div>
+    <div class="section-body">
+      <div class="hint-box">
+        <span class="hint-icon">→</span>
+        Deals that never closed because the buyer required SOC 2, ISO 27001, or other compliance you didn't have. Lost MRR is annualized — it's recurring revenue you'll never recover.
+      </div>
+      <div class="irow">
+        <div class="igrp">
+          <label>Deals lost to compliance last year</label>
+          <div class="iwrap">
+            <input type="number" id="dead_deals" class="sfx" min="0" max="50" placeholder="0" oninput="calculate()">
+            <span class="isfx">deals</span>
+          </div>
+        </div>
+        <div class="igrp">
+          <label>Average MRR per lost deal</label>
+          <div class="iwrap">
+            <span class="ipfx">$</span>
+            <input type="number" id="dead_mrr" class="both" min="0" placeholder="0" oninput="calculate()">
+            <span class="isfx">/mo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: DELAYED DEALS -->
+  <div class="section" id="s3">
+    <div class="section-head">
+      <div class="s-num">03</div>
+      <div class="s-title">Delayed Deals</div>
+      <div class="s-sub">MRR missed during wait period</div>
+    </div>
+    <div class="section-body">
+      <div class="hint-box">
+        <span class="hint-icon">→</span>
+        Deals that eventually closed but were delayed while you scrambled on compliance. The MRR you missed during that delay is gone forever, even though the deal closed.
+      </div>
+      <div class="irow">
+        <div class="igrp">
+          <label>Deals delayed by compliance issues</label>
+          <div class="iwrap">
+            <input type="number" id="delay_deals" class="sfx" min="0" max="50" placeholder="0" oninput="calculate()">
+            <span class="isfx">deals</span>
+          </div>
+        </div>
+        <div class="igrp">
+          <label>Average MRR per delayed deal</label>
+          <div class="iwrap">
+            <span class="ipfx">$</span>
+            <input type="number" id="delay_mrr" class="both" min="0" placeholder="0" oninput="calculate()">
+            <span class="isfx">/mo</span>
+          </div>
+        </div>
+      </div>
+      <div class="irow full">
+        <div class="igrp">
+          <label>Average delay duration</label>
+          <div class="iwrap">
+            <input type="number" id="delay_months" class="sfx" min="0" max="24" placeholder="0" oninput="calculate()">
+            <span class="isfx">months</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: AUDIT FAILURE -->
+  <div class="section" id="s4">
+    <div class="section-head">
+      <div class="s-num">04</div>
+      <div class="s-title">Audit Failure Cost</div>
+      <div class="s-sub">One-time remediation costs</div>
+    </div>
+    <div class="section-body">
+
+      <!-- AVERAGE ESTIMATE BASED ON STAGE/INDUSTRY -->
+      <div class="estimate-row">
+        <span class="estimate-lbl">Industry avg failure cost for your profile</span>
+        <span class="estimate-val" id="avg_estimate">—</span>
+      </div>
+
+      <div class="audit-row">
+        <label class="sw">
+          <input type="checkbox" id="audit_toggle" onchange="toggleAudit()">
+          <div class="sw-track"></div>
+          <div class="sw-thumb"></div>
+        </label>
+        <span class="audit-lbl">We failed or partially failed a compliance audit — enter our actual costs</span>
+      </div>
+
+      <div class="audit-fields" id="audit_fields">
+        <div class="hint-box" style="border-color:rgba(255,124,59,0.2); background:rgba(255,124,59,0.06);">
+          <span class="hint-icon" style="color:var(--orange)">→</span>
+          Only count costs directly triggered by the failure: the auditor returning for re-audit, consultant brought in to identify and fix gaps, and engineering hours to remediate.
+        </div>
+        <div class="irow">
+          <div class="igrp">
+            <label>Re-audit fee paid</label>
+            <div class="iwrap">
+              <span class="ipfx">$</span>
+              <input type="number" id="reaudit_fee" class="pfx" min="0" placeholder="0" oninput="calculate()">
+            </div>
+          </div>
+          <div class="igrp">
+            <label>Consultant fees to fix gaps</label>
+            <div class="iwrap">
+              <span class="ipfx">$</span>
+              <input type="number" id="consultant_fee" class="pfx" min="0" placeholder="0" oninput="calculate()">
+            </div>
+          </div>
+        </div>
+        <div class="irow">
+          <div class="igrp">
+            <label>Engineering hours to remediate</label>
+            <div class="iwrap">
+              <input type="number" id="eng_hours" class="sfx" min="0" placeholder="0" oninput="calculate()">
+              <span class="isfx">hrs</span>
+            </div>
+          </div>
+          <div class="igrp">
+            <label>Engineer hourly cost</label>
+            <div class="iwrap">
+              <span class="ipfx">$</span>
+              <input type="number" id="eng_rate" class="both" min="0" placeholder="100" oninput="calculate()">
+              <span class="isfx">/hr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IF AUDIT NOT TOGGLED, SHOW AVG USED -->
+      <div id="avg_note" style="font-size:11px; color:var(--text3); line-height:1.7; padding-top:4px;">
+        If you haven't failed an audit yet, we'll use the industry average above as a reference point in your breakdown.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="results-head">
+      <span class="results-title">Your Cost Breakdown</span>
+      <span class="results-profile" id="profile_badge">Seed · B2B SaaS</span>
+    </div>
+    <div class="results-body">
+
+      <div id="zero_state" class="zero">
+        <span class="zero-icon">⬆</span>
+        Enter your numbers above to see<br>your real compliance cost breakdown.
+      </div>
+
+      <div id="result_content" style="display:none">
+
+        <div class="li" id="li_dead">
+          <div class="li-left">
+            <div class="li-name">Lost Deal MRR (annualized)</div>
+            <div class="li-detail" id="li_dead_detail">—</div>
+          </div>
+          <div class="li-val red" id="li_dead_val">—</div>
+        </div>
+
+        <div class="li" id="li_delay">
+          <div class="li-left">
+            <div class="li-name">Delayed Deal MRR (missed)</div>
+            <div class="li-detail" id="li_delay_detail">—</div>
+          </div>
+          <div class="li-val orange" id="li_delay_val">—</div>
+        </div>
+
+        <div class="li" id="li_audit">
+          <div class="li-left">
+            <div class="li-name">Audit Failure Cost <span id="audit_type_tag" style="font-size:10px; opacity:0.6"></span></div>
+            <div class="li-detail" id="li_audit_detail">—</div>
+          </div>
+          <div class="li-val blue" id="li_audit_val">—</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="total-block">
+          <div class="total-left">
+            <div class="total-lbl">Total Estimated Impact</div>
+            <div class="total-sub">Annual MRR loss + one-time failure costs</div>
+          </div>
+          <div class="total-val" id="total_val">—</div>
+        </div>
+
+        <!-- BAR CHART -->
+        <div class="bar-chart">
+          <div class="bar-label-row">
+            <span>Cost distribution</span>
+            <span id="bar_total_pct">100%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-seg red" id="bar_dead" style="width:0%"></div>
+            <div class="bar-seg orange" id="bar_delay" style="width:0%"></div>
+            <div class="bar-seg blue" id="bar_audit" style="width:0%"></div>
+          </div>
+          <div class="bar-legend">
+            <div class="bl-item"><div class="bl-dot red"></div><span id="leg_dead">Lost deals — 0%</span></div>
+            <div class="bl-item"><div class="bl-dot orange"></div><span id="leg_delay">Delayed deals — 0%</span></div>
+            <div class="bl-item"><div class="bl-dot blue"></div><span id="leg_audit">Audit failure — 0%</span></div>
+          </div>
+        </div>
+
+        <!-- CONTEXT -->
+        <div class="ctx-box" id="ctx_box"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div class="footer-note">
+    <span style="color:var(--blue); flex-shrink:0">ℹ</span>
+    <span><strong>Transparency:</strong> Lost deal MRR is multiplied by 12 — it's recurring revenue lost every year, not a one-time hit. Delayed deal MRR is calculated only for the delay window. Audit failure costs are one-time. If you haven't failed an audit, the industry average is shown as reference only and clearly labeled. <strong>All other numbers come directly from your inputs.</strong></span>
+  </div>
+
+  <div class="zarqen-footer">
+    Built by <a href="#">Zarqen</a> · We help B2B startups get enterprise-ready in 120 days
+  </div>
+
+</div>
+
+<script>
+const state = { stage: 'seed', industry: 'saas', auditEnabled: false };
+
+// AVERAGE AUDIT FAILURE COSTS BY STAGE + INDUSTRY
+const avgFailure = {
+  seed:     { saas: '$12K–$22K', fintech: '$18K–$32K', healthcare: '$20K–$35K', other: '$10K–$20K' },
+  'series-a': { saas: '$25K–$50K', fintech: '$35K–$65K', healthcare: '$40K–$75K', other: '$20K–$45K' },
+  'series-b': { saas: '$45K–$85K', fintech: '$60K–$110K', healthcare: '$70K–$120K', other: '$40K–$80K' },
+  growth:   { saas: '$80K–$150K', fintech: '$100K–$200K', healthcare: '$120K–$220K', other: '$70K–$130K' }
+};
+
+// AVG MID VALUE FOR CALCULATION WHEN NO ACTUAL DATA
+const avgFailureMid = {
+  seed:     { saas: 17000, fintech: 25000, healthcare: 27500, other: 15000 },
+  'series-a': { saas: 37500, fintech: 50000, healthcare: 57500, other: 32500 },
+  'series-b': { saas: 65000, fintech: 85000, healthcare: 95000, other: 60000 },
+  growth:   { saas: 115000, fintech: 150000, healthcare: 170000, other: 100000 }
+};
+
+// CONTEXT
+const ctx = {
+  seed: {
+    saas: 'Seed-stage B2B SaaS companies typically need SOC 2 Type 1 to unlock first enterprise deals. Without it, procurement stalls or buyers walk to compliant competitors.',
+    fintech: 'Seed Fintech companies face SOC 2 + PCI DSS requirements early. Enterprise financial institutions have zero tolerance for compliance gaps in their vendor assessments.',
+    healthcare: 'Seed HealthTech companies need HIPAA compliance before any hospital or health system will engage. Non-negotiable at every stage of the sales cycle.',
+    other: 'At Seed stage, compliance gaps surface the moment you target your first enterprise buyer. Procurement checklists expose every missing control.'
+  },
+  'series-a': {
+    saas: 'Series A B2B SaaS companies are building enterprise sales. SOC 2 Type 2 is now table stakes — buyers expect it, not just appreciate it.',
+    fintech: 'Series A Fintech companies face multi-framework requirements. Enterprise buyers run rigorous vendor risk programs. Gaps surface at the finish line.',
+    healthcare: 'Series A HealthTech scaling enterprise needs HIPAA BAAs, SOC 2, and often ISO 27001. Gaps create liability when deals are biggest.',
+    other: 'At Series A, your enterprise pipeline is your growth story. Repeated compliance losses become a signal investors and buyers notice.'
+  },
+  'series-b': {
+    saas: 'Series B B2B SaaS is expected to have enterprise-grade compliance. Missing SOC 2 Type 2 or ISO 27001 at this stage signals operational immaturity.',
+    fintech: 'Series B Fintech faces deep scrutiny from global enterprise clients, regulators, and potential acquirers who all conduct thorough compliance reviews.',
+    healthcare: 'Series B HealthTech with enterprise pipeline cannot afford compliance gaps. Regulatory failure at scale can be existential.',
+    other: 'At Series B, enterprise ARR is your primary growth lever. Compliance gaps are a strategic risk, not just a sales problem.'
+  },
+  growth: {
+    saas: 'Growth-stage companies face multi-framework compliance demands from global enterprise customers. SOC 2 + ISO 27001 + GDPR is the new baseline.',
+    fintech: 'Growth-stage Fintech operates under full regulatory scrutiny. Compliance failures trigger fines, operational restrictions, and deals blocked by legal review.',
+    healthcare: 'Growth-stage HealthTech needs bulletproof compliance infrastructure. Violations at scale carry financial, operational, and reputational risk.',
+    other: 'At growth stage, compliance gaps compound. Each lost or delayed enterprise deal has an outsized impact on ARR and valuation multiples.'
+  }
+};
+
+function setToggle(group, val, el) {
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  state[group] = val;
+  updateProfile();
+  calculate();
+}
+
+function updateProfile() {
+  const sm = { seed: 'Seed', 'series-a': 'Series A', 'series-b': 'Series B', growth: 'Growth' };
+  const im = { saas: 'B2B SaaS', fintech: 'Fintech', healthcare: 'Healthcare', other: 'Other' };
+  document.getElementById('profile_badge').textContent = `${sm[state.stage]} · ${im[state.industry]}`;
+  document.getElementById('avg_estimate').textContent = avgFailure[state.stage]?.[state.industry] || '—';
+}
+
+function toggleAudit() {
+  state.auditEnabled = document.getElementById('audit_toggle').checked;
+  document.getElementById('audit_fields').classList.toggle('open', state.auditEnabled);
+  document.getElementById('avg_note').style.display = state.auditEnabled ? 'none' : 'block';
+  calculate();
+}
+
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function fmt(n) {
+  if (n === 0) return '$0';
+  if (n >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return '$' + Math.round(n / 1000) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function calculate() {
+  const deadDeals = v('dead_deals');
+  const deadMrr = v('dead_mrr');
+  const delayDeals = v('delay_deals');
+  const delayMrr = v('delay_mrr');
+  const delayMonths = v('delay_months');
+
+  const deadLoss = deadDeals * deadMrr * 12;
+  const delayLoss = delayDeals * delayMrr * delayMonths;
+
+  let auditLoss = 0;
+  let auditIsActual = false;
+
+  if (state.auditEnabled) {
+    const reaudit = v('reaudit_fee');
+    const consultant = v('consultant_fee');
+    const engHrs = v('eng_hours');
+    const engRate = v('eng_rate') || 100;
+    const actualAudit = reaudit + consultant + (engHrs * engRate);
+    auditLoss = actualAudit;
+    auditIsActual = true;
+  } else {
+    // Use avg mid as reference only if there's other data
+    if (deadLoss > 0 || delayLoss > 0) {
+      auditLoss = avgFailureMid[state.stage]?.[state.industry] || 0;
+      auditIsActual = false;
+    }
+  }
+
+  const total = deadLoss + delayLoss + auditLoss;
+  const hasAny = (deadLoss + delayLoss) > 0;
+
+  document.getElementById('zero_state').style.display = hasAny ? 'none' : 'block';
+  document.getElementById('result_content').style.display = hasAny ? 'block' : 'none';
+
+  if (!hasAny) return;
+
+  // DEAD
+  const liDeadVal = document.getElementById('li_dead_val');
+  liDeadVal.textContent = fmt(deadLoss);
+  liDeadVal.className = 'li-val ' + (deadLoss > 0 ? 'red' : 'dim');
+  document.getElementById('li_dead_detail').textContent =
+    deadDeals > 0 && deadMrr > 0
+      ? `${deadDeals} deal${deadDeals > 1 ? 's' : ''} × $${deadMrr.toLocaleString()}/mo MRR × 12 months`
+      : 'No lost deals entered';
+
+  // DELAY
+  const liDelayVal = document.getElementById('li_delay_val');
+  liDelayVal.textContent = fmt(delayLoss);
+  liDelayVal.className = 'li-val ' + (delayLoss > 0 ? 'orange' : 'dim');
+  document.getElementById('li_delay_detail').textContent =
+    delayDeals > 0 && delayMrr > 0 && delayMonths > 0
+      ? `${delayDeals} deal${delayDeals > 1 ? 's' : ''} × $${delayMrr.toLocaleString()}/mo × ${delayMonths} month${delayMonths !== 1 ? 's' : ''} delayed`
+      : 'No delayed deals entered';
+
+  // AUDIT
+  document.getElementById('li_audit_val').textContent = fmt(auditLoss);
+  document.getElementById('audit_type_tag').textContent = auditIsActual ? '(actual)' : '(industry avg estimate)';
+
+  if (auditIsActual) {
+    const parts = [];
+    const r = v('reaudit_fee'), c = v('consultant_fee'), h = v('eng_hours'), rt = v('eng_rate') || 100;
+    if (r > 0) parts.push(`$${r.toLocaleString()} re-audit`);
+    if (c > 0) parts.push(`$${c.toLocaleString()} consultant`);
+    if (h > 0) parts.push(`${h}hrs @ $${rt}/hr engineering`);
+    document.getElementById('li_audit_detail').textContent =
+      parts.length > 0 ? parts.join(' · ') : 'No audit costs entered';
+  } else {
+    document.getElementById('li_audit_detail').textContent =
+      `Industry avg for ${document.getElementById('profile_badge').textContent} — for reference only`;
+  }
+
+  // TOTAL
+  document.getElementById('total_val').textContent = fmt(total);
+
+  // BAR
+  const pDead = total > 0 ? (deadLoss / total) * 100 : 0;
+  const pDelay = total > 0 ? (delayLoss / total) * 100 : 0;
+  const pAudit = total > 0 ? (auditLoss / total) * 100 : 0;
+
+  document.getElementById('bar_dead').style.width = pDead + '%';
+  document.getElementById('bar_delay').style.width = pDelay + '%';
+  document.getElementById('bar_audit').style.width = pAudit + '%';
+
+  document.getElementById('leg_dead').textContent = `Lost deals — ${Math.round(pDead)}%`;
+  document.getElementById('leg_delay').textContent = `Delayed deals — ${Math.round(pDelay)}%`;
+  document.getElementById('leg_audit').textContent = `Audit failure — ${Math.round(pAudit)}%`;
+
+  // CONTEXT
+  document.getElementById('ctx_box').innerHTML =
+    `<strong>Context:</strong> ${ctx[state.stage]?.[state.industry] || ''}`;
+
+  // ANIMATE
+  document.querySelectorAll('.li').forEach((el, i) => {
+    el.classList.remove('show');
+    setTimeout(() => el.classList.add('show'), i * 100);
+  });
+}
+
+// INTERSECTION OBSERVER
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.section, .results').forEach(el => obs.observe(el));
+
+// INIT
+updateProfile();
+</script>
+</body>
+</html>
