@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { PageBackground } from "@/components/PageBackground";
 import { HeroSection } from "@/components/HeroSection";
-import { VideoSection } from "@/components/VideoSection";
 import { BeforeAfterSection } from "@/components/BeforeAfterSection";
 import { WhyUsSection } from "@/components/WhyUsSection";
 import { ROICalculator } from "@/components/ROICalculator";
@@ -20,7 +19,6 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
-        <VideoSection />
         <BeforeAfterSection />
         <WhyUsSection />
         <ROICalculator />

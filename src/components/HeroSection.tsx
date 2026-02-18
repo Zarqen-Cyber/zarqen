@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WordReveal } from "@/components/ScrollReveal";
+import { useState } from "react";
 
-export const HeroSection = () => {  return (
+export const HeroSection = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
     <section className="pt-44 pb-28 overflow-hidden">
       <div className="container-wide">
         <div className="text-center max-w-5xl mx-auto">
@@ -38,6 +42,46 @@ export const HeroSection = () => {  return (
           >
             Add $15k–$25K in new monthly revenue - SOC 2, ISO 27001, HIPAA, GDPR compliance that closes enterprise deals.
           </motion.p>
+
+          {/* Video Embed */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 max-w-4xl mx-auto"
+          >
+            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-border/50 bg-gradient-to-br from-card to-muted/20">
+              {!isPlaying ? (
+                <>
+                  {/* Thumbnail with Play Button */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600/5 to-indigo-600/5 backdrop-blur-sm">
+                    <button
+                      onClick={() => setIsPlaying(true)}
+                      className="relative z-10 flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary text-primary-foreground shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
+                    >
+                      <Play className="w-8 h-8 md:w-10 md:h-10 ml-1 transition-transform group-hover:scale-110" fill="currentColor" />
+                      <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20" />
+                    </button>
+                  </div>
+                  
+                  {/* Decorative Elements */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 via-transparent to-indigo-600/10 opacity-50" />
+                  <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 text-xs font-semibold text-foreground">
+                    2 min watch
+                  </div>
+                </>
+              ) : (
+                /* Loom Embed */
+                <iframe
+                  src="https://www.loom.com/embed/4de5d4a06de74deeb1e89b36843407c1?autoplay=1&hide_owner=true&hide_share=true&hide_title=true"
+                  frameBorder="0"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  allow="autoplay"
+                />
+              )}
+            </div>
+          </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
