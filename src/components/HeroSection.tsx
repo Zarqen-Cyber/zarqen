@@ -72,13 +72,15 @@ export const HeroSection = () => {
                 </>
               ) : (
                 /* Loom Embed */
-                <iframe
-                  src="https://www.loom.com/embed/4de5d4a06de74deeb1e89b36843407c1?autoplay=1&hide_owner=true&hide_share=true&hide_title=true"
-                  frameBorder="0"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                  allow="autoplay"
-                />
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+                  <iframe 
+                    src="https://www.loom.com/embed/4de5d4a06de74deeb1e89b36843407c1" 
+                    frameBorder="0" 
+                    allowFullScreen
+                    allow="autoplay"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                  />
+                </div>
               )}
             </div>
           </motion.div>

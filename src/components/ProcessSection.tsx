@@ -82,11 +82,11 @@ export const ProcessSection = () => {
 
         {/* Video Embed */}
         <ScrollReveal className="max-w-4xl mx-auto mt-20">
-          <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-border/50 bg-gradient-to-br from-card to-muted/20">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border/50 bg-gradient-to-br from-card to-muted/20">
             {!isPlaying ? (
               <>
                 {/* Thumbnail with Play Button */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600/5 to-indigo-600/5 backdrop-blur-sm">
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600/5 to-indigo-600/5 backdrop-blur-sm z-10" style={{ paddingBottom: '49.74619289340102%' }}>
                   <button
                     onClick={() => setIsPlaying(true)}
                     className="relative z-10 flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary text-primary-foreground shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
@@ -97,20 +97,23 @@ export const ProcessSection = () => {
                 </div>
                 
                 {/* Decorative Elements */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 via-transparent to-indigo-600/10 opacity-50" />
-                <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 text-xs font-semibold text-foreground">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 via-transparent to-indigo-600/10 opacity-50" style={{ paddingBottom: '49.74619289340102%' }} />
+                <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 text-xs font-semibold text-foreground z-20">
                   Watch the process
                 </div>
+                <div style={{ paddingBottom: '49.74619289340102%' }} />
               </>
             ) : (
               /* Loom Embed */
-              <iframe
-                src="https://www.loom.com/embed/40fc09e3b5054725bdc1feb6306504a0?autoplay=1&hide_owner=true&hide_share=true&hide_title=true"
-                frameBorder="0"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-                allow="autoplay"
-              />
+              <div style={{ position: 'relative', paddingBottom: '49.74619289340102%', height: 0 }}>
+                <iframe 
+                  src="https://www.loom.com/embed/40fc09e3b5054725bdc1feb6306504a0" 
+                  frameBorder="0" 
+                  allowFullScreen
+                  allow="autoplay"
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                />
+              </div>
             )}
           </div>
         </ScrollReveal>
