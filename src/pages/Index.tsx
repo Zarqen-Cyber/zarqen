@@ -22,8 +22,8 @@ const Index = () => {
         <BeforeAfterSection />
         <WhyUsSection />
         <ROICalculator />
-        <ProcessSection />
         <AuditReadySection />
+        <ProcessSection />
         <AboutSection />
         <FAQSection />
         <CalendlySection />
