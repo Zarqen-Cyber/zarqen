@@ -7,7 +7,7 @@ import { useScroll } from "@/hooks/use-scroll";
 const navLinks = [
   { name: "Home", href: "#" },
   { name: "Why Us", href: "#why-us" },
-  { name: "Our Process", href: "#process" },
+  { name: "Our Process", href: "#our-process" },
   { name: "FAQ", href: "#faq" },
   { name: "Contact", href: "#contact" },
 ];

@@ -43,7 +43,7 @@ export const Footer = () => {
                 Why Us
               </a>
               <a
-                href="#process"
+                href="#our-process"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
               >
                 Our Process
