@@ -24,7 +24,7 @@ const comparisons = [
   },
   {
     before: "No security team to figure this out",
-    after: "Audit-ready without the confusion",
+    after: "Compliance-ready without the confusion",
   },
 ];
 

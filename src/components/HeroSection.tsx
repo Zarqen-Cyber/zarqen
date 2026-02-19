@@ -27,7 +27,7 @@ export const HeroSection = () => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-bold tracking-tight text-foreground leading-[1.08] mb-8">
             <WordReveal text="Get" delay={0.15} />
             {" "}
-            <WordReveal text="Audit-Ready" delay={0.25} gradient />
+            <WordReveal text="Compliance-Ready" delay={0.25} gradient />
             <span className="block mt-3">
               <WordReveal text="in 120 Days" delay={0.4} />
             </span>

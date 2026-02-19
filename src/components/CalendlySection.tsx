@@ -65,7 +65,7 @@ export const CalendlySection = () => {
                   Book Your Free 30-Minute Scoping Call
                 </h3>
                 <p className="text-muted-foreground">
-                  We'll discuss your compliance needs and figure out exactly what you need to get audit-ready.
+                  We'll discuss your compliance needs and figure out exactly what you need to get compliance-ready.
                 </p>
               </div>
               

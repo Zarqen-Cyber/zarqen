@@ -21,7 +21,7 @@ export const CTASection = () => {
 
               <ScrollReveal delay={0.3}>
                 <p className="text-xl md:text-2xl text-primary-foreground/90 mb-10 leading-relaxed">
-                  Get audit-ready in 120 days and start closing those enterprise deals.
+                  Get compliance-ready in 120 days and start closing those enterprise deals.
                 </p>
               </ScrollReveal>
 

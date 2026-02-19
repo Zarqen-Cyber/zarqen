@@ -48,7 +48,7 @@ export const AuditReadySection = () => {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
             <WordReveal text="Here's Exactly How We Get" />
             <span className="block mt-2">
-              <WordReveal text="You Audit-Ready" delay={0.2} gradient />
+              <WordReveal text="You Compliance-Ready" delay={0.2} gradient />
             </span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-6">

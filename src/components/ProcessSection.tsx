@@ -21,7 +21,7 @@ const steps = [
   },
   {
     number: "4",
-    title: "You're Audit-Ready",
+    title: "You're Compliance-Ready",
     description:
       "Everything you need to pass your audit or close your enterprise deal.",
   },

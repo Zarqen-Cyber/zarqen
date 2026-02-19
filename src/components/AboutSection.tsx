@@ -17,7 +17,7 @@ export const AboutSection = () => {
                 We are a security consultancy that combines penetration testing with compliance frameworks so that you can close enterprise deals without the security headache.
               </h2>
               <p className="text-base md:text-lg opacity-90 leading-relaxed mb-8 mx-auto max-w-2xl">
-                Built for SaaS startups pursuing SOC 2, ISO 27001, HIPAA, PCI-DSS, and GDPR. We get you audit-ready in 120 days — turning security from a sales blocker into a revenue driver.
+                Built for SaaS startups pursuing SOC 2, ISO 27001, HIPAA, PCI-DSS, and GDPR. We get you compliance-ready in 120 days — turning security from a sales blocker into a revenue driver.
               </p>
               <div className="flex justify-center">
                 <Button
