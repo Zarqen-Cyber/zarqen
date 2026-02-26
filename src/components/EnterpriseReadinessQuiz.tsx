@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ScrollReveal, WordReveal } from "@/components/ScrollReveal";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, XCircle, RotateCcw, ShieldCheck, AlertTriangle, TrendingDown, XOctagon } from "lucide-react";
 
@@ -206,26 +206,6 @@ export const EnterpriseReadinessQuiz = () => {
   return (
     <section id="quiz" className="section-padding bg-secondary/30">
       <div className="container-wide">
-        {/* Header */}
-        <ScrollReveal className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-secondary border border-border mb-6">
-            <span className="text-sm font-medium text-foreground uppercase tracking-wider">
-              Enterprise Readiness Quiz
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground max-w-4xl mx-auto leading-tight">
-            <WordReveal text="Are You Actually" />
-            <span className="block mt-2">
-              <WordReveal text="Enterprise-Ready?" delay={0.2} gradient />
-            </span>
-          </h2>
-          <ScrollReveal delay={0.35}>
-            <p className="mt-5 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              10 questions. 2 minutes. Find out exactly where you stand before your next enterprise deal hits security review.
-            </p>
-          </ScrollReveal>
-        </ScrollReveal>
-
         {/* Quiz Card */}
         <ScrollReveal delay={0.2} className="max-w-2xl mx-auto">
           <div className="bg-white rounded-3xl border border-border/50 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.10)] overflow-hidden">

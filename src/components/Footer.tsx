@@ -49,7 +49,7 @@ export const Footer = () => {
                 Our Process
               </a>
               <a
-                href="#quiz"
+                href="/quiz"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
               >
                 Quiz
