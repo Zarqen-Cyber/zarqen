@@ -114,7 +114,7 @@ const tiers: ScoreTier[] = [
       "Your sales team avoids large logos",
       "Competitors with stronger compliance win the deal",
     ],
-    closing: "You are losing ₹40–80 lakhs+ per stalled enterprise deal.",
+    closing: "You are losing $50K-100K per stalled enterprise deal.",
     color: "text-orange-700",
     bgColor: "bg-orange-50",
     borderColor: "border-orange-200",
