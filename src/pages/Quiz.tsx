@@ -51,7 +51,7 @@ const Quiz = () => {
               transition={{ delay: 0.35, duration: 0.7, ease }}
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
             >
-              Answer honestly. Find out exactly where you stand before your next enterprise deal hits security review — and what's silently killing your pipeline.
+              Answer honestly. Find out exactly where you stand before your next enterprise deal hits security review - and what's silently killing your pipeline.
             </motion.p>
           </div>
         </section>
